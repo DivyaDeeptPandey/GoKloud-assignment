@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+import { motion } from "framer-motion";
 import { Check, ChevronDown, ChevronUp } from "lucide-react";
 
 const ComparePlans = () => {
@@ -34,72 +35,136 @@ const ComparePlans = () => {
     setExpandedRow(expandedRow === idx ? null : idx);
   };
 
+  // Animation variants
+  const containerVariants = { hidden: { opacity: 0 }, visible: { opacity: 1, transition: { staggerChildren: 0.05 } } };
+  const itemVariants = { hidden: { y: 20, opacity: 0 }, visible: { y: 0, opacity: 1, transition: { duration: 0.5, ease: "easeOut" } } };
+  const rowVariants = { hidden: { opacity: 0, x: -20 }, visible: { opacity: 1, x: 0, transition: { duration: 0.4, ease: "easeOut" } } };
+  const detailVariants = { hidden: { opacity: 0, height: 0 }, visible: { opacity: 1, height: "auto", transition: { duration: 0.3, ease: "easeOut" } } };
+
   return (
-    <div className="px-4 py-4">
-      <section className="py-16 px-4 lg:px-12 bg-white rounded-md">
+    <motion.div
+      initial={{ opacity: 0 }}
+      whileInView={{ opacity: 1 }}
+      viewport={{ once: true, margin: "-100px" }}
+      transition={{ duration: 0.6 }}
+      className="px-4 py-4"
+    >
+      <motion.section
+        initial={{ y: 30, opacity: 0 }}
+        whileInView={{ y: 0, opacity: 1 }}
+        viewport={{ once: true, margin: "-50px" }}
+        transition={{ duration: 0.7, ease: "easeOut" }}
+        className="py-16 px-4 lg:px-12 bg-white rounded-md"
+      >
         {/* Section Title */}
-        <h2 className="text-4xl font-semibold mb-12">Compare plans</h2>
+        <motion.h2
+          initial={{ opacity: 0, y: 20 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true }}
+          transition={{ duration: 0.6 }}
+          className="text-4xl font-semibold mb-12"
+        >
+          Compare plans
+        </motion.h2>
 
-        {/* Table */}
-        <table className="w-full">
-          {/* Table Head */}
-          <thead className="border-t border-b">
-            <tr>
-              <th className="text-left py-6 px-4 text-3xl font-medium">Execution</th>
-              {plans.map((plan, idx) => (
-                <th key={idx} className="text-center py-6 px-4 text-lg font-medium">
-                  {plan}
-                </th>
-              ))}
-            </tr>
-          </thead>
+        {/* Scrollable Container */}
+        <div className="overflow-x-auto">
+          <motion.table
+            variants={containerVariants}
+            initial="hidden"
+            whileInView="visible"
+            viewport={{ once: true, margin: "-50px" }}
+            className="w-full min-w-[700px]" // ✅ ensures scroll if smaller screen
+          >
+            {/* Table Head */}
+            <thead className="border-t border-b">
+              <motion.tr variants={itemVariants}>
+                <th className="text-left py-6 px-4 text-3xl font-medium">Execution</th>
+                {plans.map((plan, idx) => (
+                  <motion.th
+                    key={idx}
+                    variants={itemVariants}
+                    transition={{ delay: idx * 0.1 }}
+                    className="text-center py-6 px-4 text-lg font-medium"
+                  >
+                    {plan}
+                  </motion.th>
+                ))}
+              </motion.tr>
+            </thead>
 
-          {/* Table Body */}
-          <tbody>
-            {rows.map((row, idx) => (
-              <React.Fragment key={idx}>
-                <tr
-                  className={`even:bg-[#F7F5F2] ${row.details ? "cursor-pointer border-l-2" : ""}`}
-                  onClick={() => row.details && toggleRow(idx)}
-                >
-                  <td className="py-5 px-4 text-sm text-gray-800 flex items-center justify-between">
-                    {row.label}
-                    {row.details && (
-                      expandedRow === idx ? (
-                        <ChevronUp className="w-4 h-4 text-gray-600" />
-                      ) : (
-                        <ChevronDown className="w-4 h-4 text-gray-600" />
-                      )
-                    )}
-                  </td>
-                  {row.values.map((val, i) => (
-                    <td
-                      key={i}
-                      className="py-5 px-4 text-center text-sm text-gray-700"
-                    >
-                      {val === "check" ? (
-                        <Check className="w-5 h-5 mx-auto text-black" />
-                      ) : (
-                        val
+            {/* Table Body */}
+            <tbody>
+              {rows.map((row, idx) => (
+                <React.Fragment key={idx}>
+                  <motion.tr
+                    variants={rowVariants}
+                    initial="hidden"
+                    whileInView="visible"
+                    viewport={{ once: true, margin: "-20px" }}
+                    transition={{ delay: idx * 0.05 }}
+                    className={`even:bg-[#F7F5F2] ${row.details ? "cursor-pointer border-l-2" : ""}`}
+                    onClick={() => row.details && toggleRow(idx)}
+                    whileHover={row.details ? { backgroundColor: "#f0f0f0" } : {}}
+                  >
+                    <td className="py-5 px-4 text-sm text-gray-800 flex items-center justify-between">
+                      {row.label}
+                      {row.details && (
+                        expandedRow === idx ? (
+                          <ChevronUp className="w-4 h-4 text-gray-600" />
+                        ) : (
+                          <ChevronDown className="w-4 h-4 text-gray-600" />
+                        )
                       )}
                     </td>
-                  ))}
-                </tr>
+                    {row.values.map((val, i) => (
+                      <td
+                        key={i}
+                        className="py-5 px-4 text-center text-sm text-gray-700"
+                      >
+                        {val === "check" ? (
+                          <motion.span
+                            initial={{ scale: 0 }}
+                            whileInView={{ scale: 1 }}
+                            viewport={{ once: true }}
+                            transition={{ type: "spring", stiffness: 300, damping: 15 }}
+                          >
+                            <Check className="w-5 h-5 mx-auto text-black" />
+                          </motion.span>
+                        ) : (
+                          <motion.span
+                            initial={{ opacity: 0 }}
+                            whileInView={{ opacity: 1 }}
+                            viewport={{ once: true }}
+                            transition={{ delay: i * 0.05 + idx * 0.02 }}
+                          >
+                            {val}
+                          </motion.span>
+                        )}
+                      </td>
+                    ))}
+                  </motion.tr>
 
-                {/* Expanded details row */}
-                {row.details && expandedRow === idx && (
-                  <tr className="even:bg-[#F7F5F2]">
-                    <td colSpan={plans.length + 1} className="py-4 px-4 text-sm text-gray-600 border-l-2">
-                      {row.details}
-                    </td>
-                  </tr>
-                )}
-              </React.Fragment>
-            ))}
-          </tbody>
-        </table>
-      </section>
-    </div>
+                  {/* Expanded details row */}
+                  {row.details && expandedRow === idx && (
+                    <motion.tr
+                      initial="hidden"
+                      animate="visible"
+                      variants={detailVariants}
+                      className="even:bg-[#F7F5F2]"
+                    >
+                      <td colSpan={plans.length + 1} className="py-4 px-4 text-sm text-gray-600 border-l-2">
+                        {row.details}
+                      </td>
+                    </motion.tr>
+                  )}
+                </React.Fragment>
+              ))}
+            </tbody>
+          </motion.table>
+        </div>
+      </motion.section>
+    </motion.div>
   );
 };
 
