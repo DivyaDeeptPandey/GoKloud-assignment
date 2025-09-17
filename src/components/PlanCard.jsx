@@ -7,7 +7,7 @@ const PlanCard = ({ plan }) => {
 
   return (
     <div
-      className={`rounded-xl overflow-hidden ${
+      className={`rounded-xl overflow-hidden h-full ${
         isMostPopular ? "border border-black" : "border border-gray-300"
       }`}
     >

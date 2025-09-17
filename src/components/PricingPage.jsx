@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+import { motion } from "framer-motion";
 import PlanCard from "./PlanCard";
 import ToggleSwitch from "./ToggleSwitch";
 
@@ -91,40 +92,99 @@ const PricingPage = () => {
     },
   ];
 
+  // Animation variants
+  const containerVariants = {
+    hidden: { opacity: 0 },
+    visible: {
+      opacity: 1,
+      transition: {
+        staggerChildren: 0.1
+      }
+    }
+  };
+
+  const itemVariants = {
+    hidden: { y: 20, opacity: 0 },
+    visible: {
+      y: 0,
+      opacity: 1,
+      transition: {
+        duration: 0.5,
+        ease: "easeOut"
+      }
+    }
+  };
+
   return (
-    <div className="px-4 py-4">
-      <div className="w-full bg-white py-12 px-4 md:px-12 rounded-md">
-      {/* Top section */}
-      <div className="flex flex-col md:flex-row items-start md:items-center justify-between mb-12 gap-6">
-        {/* Left: Heading */}
-        <h1 className="text-3xl md:text-4xl font-medium max-w-xl">
-          Everything you need to grow your business
-        </h1>
+    <motion.div
+      initial={{ opacity: 0 }}
+      animate={{ opacity: 1 }}
+      transition={{ duration: 0.5 }}
+      className="px-4 py-4"
+    >
+      <motion.div
+        initial={{ y: 20, opacity: 0 }}
+        animate={{ y: 0, opacity: 1 }}
+        transition={{ duration: 0.6 }}
+        className="w-full bg-white py-12 px-4 md:px-12 rounded-md"
+      >
+        {/* Top section */}
+        <motion.div
+          variants={containerVariants}
+          initial="hidden"
+          animate="visible"
+          className="flex flex-col md:flex-row items-start md:items-center justify-between mb-12 gap-6"
+        >
+          {/* Left: Heading */}
+          <motion.h1
+            variants={itemVariants}
+            className="text-3xl md:text-4xl font-medium max-w-xl"
+          >
+            Everything you need to grow your business
+          </motion.h1>
 
-        {/* Right: Text + Toggle */}
-        <div className="flex flex-col items-start md:items-start gap-4">
-          <p className="text-gray-600 max-w-sm text-sm md:text-base">
-            Build pipeline, close more deals, and enrich data with
-            industry-leading B2B data and AI-powered tools.
-          </p>
+          {/* Right: Text + Toggle */}
+          <motion.div
+            variants={itemVariants}
+            className="flex flex-col items-start md:items-start gap-4"
+          >
+            <p className="text-gray-600 max-w-sm text-sm md:text-base">
+              Build pipeline, close more deals, and enrich data with
+              industry-leading B2B data and AI-powered tools.
+            </p>
 
-          <ToggleSwitch billing={billing} setBilling={setBilling} />
-        </div>
-      </div>
+            <ToggleSwitch billing={billing} setBilling={setBilling} />
+          </motion.div>
+        </motion.div>
 
-      {/* Cards */}
-      <div className="grid md:grid-cols-4 gap-6 max-w-8xl mx-auto">
-        {plans.map((plan, idx) => (
-          <PlanCard key={idx} plan={plan} />
-        ))}
-      </div>
+        {/* Cards */}
+        <motion.div
+          variants={containerVariants}
+          initial="hidden"
+          animate="visible"
+          className="grid md:grid-cols-4 gap-6 max-w-8xl mx-auto items-stretch"
+        >
+          {plans.map((plan, idx) => (
+            <motion.div
+              key={idx}
+              variants={itemVariants}
+            >
+              <PlanCard plan={plan} />
+            </motion.div>
+          ))}
+        </motion.div>
 
-      {/* Footer note */}
-      <p className="text-center text-gray-500 text-sm mt-6">
-        Prices exclude any applicable taxes.
-      </p>
-    </div>
-    </div>
+        {/* Footer note */}
+        <motion.p
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          transition={{ delay: 0.8, duration: 0.5 }}
+          className="text-center text-gray-500 text-sm mt-6"
+        >
+          Prices exclude any applicable taxes.
+        </motion.p>
+      </motion.div>
+    </motion.div>
   );
 };
 
