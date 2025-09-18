@@ -1,9 +1,8 @@
-import React, { useState } from "react";
 import { motion } from "framer-motion";
 import PlanCard from "./PlanCard";
 import ToggleSwitch from "./ToggleSwitch";
 
-const PricingPage = () => {
+const PricingSection = () => {
   const [billing, setBilling] = useState("annual"); // annual | monthly
 
   const plans = [
@@ -183,4 +182,4 @@ const PricingPage = () => {
   );
 };
 
-export default PricingPage;
+export default PricingSection;

@@ -1,6 +1,5 @@
-import { useState } from 'react'
 import './App.css'
-import PricingPage from './components/PricingPage'
+import PricingSection from './components/PricingSection'
 import SocialProofStats from './components/SocialProofStats'
 import ComparePlans from './components/ComparePlans'
 
@@ -8,7 +7,7 @@ function App() {
 
   return (
     <>
-      <PricingPage/>
+      <PricingSection/>
       <SocialProofStats/>
       <ComparePlans/>
     </>
