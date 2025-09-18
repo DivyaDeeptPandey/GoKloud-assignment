@@ -23,12 +23,7 @@ const PlanCard = ({ plan }) => {
           ${isMostPopular ? "py-4 sm:py-6" : "py-8 sm:py-12"}
         `}
       >
-        {/* small pill tag for non-most-popular cards */}
-        {!isMostPopular && plan.tag && (
-          <div className="bg-black text-white text-[10px] sm:text-xs uppercase px-2 py-1 rounded w-fit mb-3">
-            {plan.tag}
-          </div>
-        )}
+        
 
         <div>
           <h2 className="text-2xl sm:text-3xl md:text-4xl text-center mb-2">
